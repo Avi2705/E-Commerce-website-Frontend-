@@ -1,12 +1,12 @@
 import productData from "../json/Data.js";
-const Sidebar = ({brands,pricerange,setPricerange,selectbrand, setSelectbrand , selectram, setSelectRam , }) => {
+const Sidebar = ({brands,pricerange,setPricerange,selectbrand, setSelectbrand , selectram, setSelectRam , selectstorage, setSelectStorage}) => {
 const ramoptions = [...new Set(productData.map((p)=>p.ram))].sort((a,b) => a-b);
 const storageoptions = [...new Set(productData.map((p)=>p.storage))].sort((a,b) => a-b);
 const minprice = Math.min(...productData.map((p)=>p.price))
 const maxprice = Math.max(...productData.map((p)=>p.price))
 
   return (
-    <div className="w-64 bg-gray-100 h-screen sticky top-16  overflow-y-auto shadow-inner">
+    <div className="w-64 bg-emerald-100 h-screen sticky top-16 overflow-y-auto shadow-inner">
 <h3 className="font-bold text-xl text-emerald-800 mb-6 ml-8 ">Filters</h3>
 {/* brand */}
 {brands.map((brand) => (
@@ -14,7 +14,7 @@ const maxprice = Math.max(...productData.map((p)=>p.price))
     <input
     
       type="checkbox"
-      className="mr-2 accent-emerald-600"
+      className="mr-2 ml-8 accent-emerald-600"
       onChange={() =>
         setSelectbrand(
           selectbrand.includes(brand)
@@ -35,8 +35,8 @@ const maxprice = Math.max(...productData.map((p)=>p.price))
     max={maxprice} value={pricerange[1] } onChange={(e)=>setPricerange([minprice, parseInt(e.target.value)])} type="range"/>
         <div className="flex justify-between text-sm mt-2">
             <span>
-              {  pricerange[0]}</span>
-            <span> {  pricerange[1]}</span>
+             ₹ {  pricerange[0]}</span>
+            <span>₹ {  pricerange[1]}</span>
         </div>
     </label>
 </div>
@@ -53,20 +53,26 @@ const maxprice = Math.max(...productData.map((p)=>p.price))
 
 </div>
     {/* Storage */}
-    
 <div className="mb-6 ml-8">
-<h1 className="text-emerald-800 font-medium mb-3"> Ram </h1>
-<select className="w-full border border-gray-100 rounded focus: outline-none focus:ring-2 focus:ring-emerald-500">
-    <option>all</option>
-    {storageoptions.map((storage)=>(
-        <option key={storage} value={storage}>{storage}GB</option>
-    ) )}
-</select>
+  <h1 className="text-emerald-800 font-medium mb-3">Storage</h1>
+
+  <select
+    value={selectstorage || ""}
+    onChange={(e) =>
+      setSelectStorage(e.target.value === "" ? "" : e.target.value)
+    }
+    className="w-full border border-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-emerald-500"
+  >
+    <option value="">All</option>
+    {storageoptions.map((storage) => (
+      <option key={storage} value={storage}>
+        {storage} GB
+      </option>
+    ))}
+  </select>
+</div>
 
 </div>
-{JSON.stringify(selectbrand)}
-{selectram}
-    </div>
-  )
-}
+ 
+  )}
  export  default Sidebar;
